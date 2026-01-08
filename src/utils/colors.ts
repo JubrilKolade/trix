@@ -20,4 +20,16 @@ export class ColorHelper {
   static highlight(text: string): string {
     return chalk.cyan(text);
   }
+  
+  static dim(text: string): string {
+    return chalk.gray(text);
+  }
+  
+  static bold(text: string): string {
+    return chalk.bold(text);
+  }
+  
+  static link(text: string): string {
+    return chalk.underline.cyan(text);
+  }
 }

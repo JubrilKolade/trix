@@ -1,5 +1,5 @@
 import { execa } from 'execa';
-import { PackageManager } from '../types/package-managers';
+import { PackageManager } from '../types/package-manager';
 import { PACKAGE_MANAGER_CONFIGS } from './package-manager';
 
 export class DependencyInstaller {
@@ -9,10 +9,30 @@ export class DependencyInstaller {
     this.config = PACKAGE_MANAGER_CONFIGS[packageManager];
   }
   
-  async installAll(cwd: string): Promise<void> {
+  async installProd(packages: string[], cwd: string): Promise<void> {
+    if (packages.length === 0) return;
+    
     await execa(
       this.packageManager,
-      ['install'],
+      [...this.config.install, ...packages],
+      { cwd, stdio: 'inherit' }
+    );
+  }
+  
+  async installDev(packages: string[], cwd: string): Promise<void> {
+    if (packages.length === 0) return;
+    
+    await execa(
+      this.packageManager,
+      [...this.config.installDev, ...packages],
+      { cwd, stdio: 'inherit' }
+    );
+  }
+  
+  async runScript(script: string, cwd: string): Promise<void> {
+    await execa(
+      this.packageManager,
+      [this.config.run, script],
       { cwd, stdio: 'inherit' }
     );
   }
@@ -22,6 +42,14 @@ export class DependencyInstaller {
     await execa(
       execParts[0],
       [...execParts.slice(1), command, ...args],
+      { cwd, stdio: 'inherit' }
+    );
+  }
+  
+  async installAll(cwd: string): Promise<void> {
+    await execa(
+      this.packageManager,
+      ['install'],
       { cwd, stdio: 'inherit' }
     );
   }

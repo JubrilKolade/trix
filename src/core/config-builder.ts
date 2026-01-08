@@ -1,5 +1,5 @@
 import { Validator } from './validator';
-import { TemplateModule } from '../types/templates';
+import { TemplateModule } from '../types/template';
 import { ProjectConfig, FrontendConfig, BackendConfig } from '../types/config';
 import { DependencyInstaller } from '../installers/dependency-installer';
 import path from 'path';
@@ -32,14 +32,14 @@ export class ConfigurationBuilder {
   async buildConfiguration(config: ProjectConfig): Promise<ResolvedConfig> {
     const validation = await this.validator.validateCombination(config);
     if (!validation.valid) {
-      throw new Error(`Invalid configuration`);
+      throw new Error(`Invalid configuration: ${validation.issues.map(i => i.message).join(', ')}`);
     }
     
     const modules = await this.loadModules(config);
     const dependencies = this.mergeDependencies(modules);
-    const mergedPackageJson = this.buildPackageJson(config, modules);
-    const postInstallCommands: PostInstallCommand[] = [];
-    const postInstallMessages: string[] = [];
+    const mergedPackageJson = this.buildPackageJson(config, modules, dependencies);
+    const postInstallCommands = this.collectPostInstallCommands(modules, config);
+    const postInstallMessages = this.collectPostInstallMessages(modules);
     
     return {
       config,
@@ -52,24 +52,224 @@ export class ConfigurationBuilder {
   }
   
   private async loadModules(config: ProjectConfig): Promise<TemplateModule[]> {
-    return [];
+    const modules: TemplateModule[] = [];
+    
+    if (config.projectType === 'frontend') {
+      modules.push(...this.loadFrontendModules(config as FrontendConfig));
+    } else if (config.projectType === 'backend') {
+      modules.push(...this.loadBackendModules(config as BackendConfig));
+    }
+    
+    return modules;
+  }
+  
+  private loadFrontendModules(config: FrontendConfig): TemplateModule[] {
+    const modules: TemplateModule[] = [];
+    
+    modules.push(this.loadModule('frontend', 'base', config.framework));
+    modules.push(this.loadModule('frontend', 'styling', config.styling));
+    
+    if (config.auth !== 'none') {
+      modules.push(this.loadModule('frontend', 'auth', config.auth));
+    }
+    
+    config.uiComponents.forEach(lib => {
+      if (lib !== 'none') {
+        modules.push(this.loadModule('frontend', 'ui-components', lib));
+      }
+    });
+    
+    if (config.stateManagement !== 'none') {
+      modules.push(this.loadModule('frontend', 'state-management', config.stateManagement));
+    }
+    
+    modules.push(this.loadModule('frontend', 'api-client', config.apiClient));
+    
+    if (config.routing) {
+      modules.push(this.loadModule('frontend', 'routing', 'react-router'));
+    }
+    
+    if (config.pwa) {
+      modules.push(this.loadModule('frontend', 'pwa', 'vite-pwa'));
+    }
+    
+    if (config.testing) {
+      modules.push(this.loadModule('frontend', 'testing', 'vitest'));
+    }
+    
+    return modules;
+  }
+  
+  private loadBackendModules(config: BackendConfig): TemplateModule[] {
+    const modules: TemplateModule[] = [];
+    
+    modules.push(this.loadModule('backend', 'base', `${config.runtime}-${config.framework}`));
+    
+    if (config.database !== 'none') {
+      modules.push(this.loadModule('backend', 'database', config.database));
+    }
+    
+    if (config.orm !== 'none') {
+      modules.push(this.loadModule('backend', 'orm', config.orm));
+    }
+    
+    if (config.auth !== 'none') {
+      modules.push(this.loadModule('backend', 'auth', config.auth));
+    }
+    
+    modules.push(this.loadModule('backend', 'api-type', config.apiType));
+    
+    if (config.validation !== 'none') {
+      modules.push(this.loadModule('backend', 'validation', config.validation));
+    }
+    
+    if (config.fileUpload) {
+      modules.push(this.loadModule('backend', 'file-upload', 'multer'));
+    }
+    
+    if (config.email) {
+      modules.push(this.loadModule('backend', 'email', 'nodemailer'));
+    }
+    
+    if (config.queue) {
+      modules.push(this.loadModule('backend', 'queue', 'bullmq'));
+    }
+    
+    if (config.cache) {
+      modules.push(this.loadModule('backend', 'cache', 'redis'));
+    }
+    
+    if (config.testing) {
+      modules.push(this.loadModule('backend', 'testing', 'jest'));
+    }
+    
+    if (config.logging) {
+      modules.push(this.loadModule('backend', 'logging', 'winston'));
+    }
+    
+    if (config.docker) {
+      modules.push(this.loadModule('backend', 'docker', 'compose'));
+    }
+    
+    return modules;
+  }
+  
+  private loadModule(
+    projectType: string,
+    category: string,
+    name: string
+  ): TemplateModule {
+    const modulePath = path.join(
+      process.cwd(),
+      'templates',
+      projectType,
+      'modules',
+      category,
+      name,
+      'module.json'
+    );
+    
+    try {
+      if (fs.existsSync(modulePath)) {
+        return fs.readJSONSync(modulePath);
+      }
+    } catch (error) {
+      console.warn(`Could not load module: ${modulePath}`);
+    }
+    
+    return {
+      name: `${category}-${name}`,
+      type: 'addon',
+      files: [],
+      dependencies: { prod: {}, dev: {} },
+      scripts: {},
+      configs: {},
+      injections: [],
+      postInstall: []
+    };
   }
   
   private mergeDependencies(modules: TemplateModule[]): { prod: string[]; dev: string[] } {
-    return { prod: [], dev: [] };
+    const prod = new Set<string>();
+    const dev = new Set<string>();
+    
+    modules.forEach(module => {
+      Object.keys(module.dependencies.prod).forEach(pkg => prod.add(pkg));
+      Object.keys(module.dependencies.dev).forEach(pkg => dev.add(pkg));
+    });
+    
+    return {
+      prod: Array.from(prod),
+      dev: Array.from(dev)
+    };
   }
   
-  private buildPackageJson(config: ProjectConfig, modules: TemplateModule[]): any {
-    return {
+  private buildPackageJson(
+    config: ProjectConfig,
+    modules: TemplateModule[],
+    dependencies: { prod: string[]; dev: string[] }
+  ): any {
+    const packageJson: any = {
       name: config.projectName,
       version: '0.1.0',
       private: true,
-      scripts: {
-        dev: 'vite',
-        build: 'vite build'
-      },
+      type: 'module',
+      scripts: {},
       dependencies: {},
       devDependencies: {}
     };
+    
+    modules.forEach(module => {
+      Object.assign(packageJson.dependencies, module.dependencies.prod);
+      Object.assign(packageJson.devDependencies, module.dependencies.dev);
+      Object.assign(packageJson.scripts, module.scripts);
+    });
+    
+    return packageJson;
+  }
+  
+  private collectPostInstallCommands(
+    modules: TemplateModule[],
+    config: ProjectConfig
+  ): PostInstallCommand[] {
+    const commands: PostInstallCommand[] = [];
+    
+    if (config.projectType === 'frontend') {
+      const fe = config as FrontendConfig;
+      if (fe.uiComponents.includes('shadcn')) {
+        commands.push({
+          name: 'shadcn-init',
+          execute: async (installer, cwd) => {
+            await installer.exec('shadcn-ui@latest', ['init', '-y'], cwd);
+          }
+        });
+      }
+    }
+    
+    if (config.projectType === 'backend') {
+      const be = config as BackendConfig;
+      if (be.orm === 'prisma') {
+        commands.push({
+          name: 'prisma-generate',
+          execute: async (installer, cwd) => {
+            await installer.exec('prisma', ['generate'], cwd);
+          }
+        });
+      }
+    }
+    
+    return commands;
+  }
+  
+  private collectPostInstallMessages(modules: TemplateModule[]): string[] {
+    const messages: string[] = [];
+    
+    modules.forEach(module => {
+      if (module.postInstall) {
+        messages.push(...module.postInstall);
+      }
+    });
+    
+    return messages;
   }
 }

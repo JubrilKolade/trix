@@ -13,6 +13,9 @@ dist
 .env.local
 *.log
 .DS_Store
+coverage
+.vscode
+.idea
     `.trim();
     
     await fs.writeFile(path.join(cwd, '.gitignore'), gitignore);

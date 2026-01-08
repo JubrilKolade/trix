@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import fs from 'fs-extra';
-import { ProjectType, PackageManager } from '../types/config';
+import { ProjectType, PackageManager } from '../types';
 import { PackageManagerDetector } from '../installers/package-manager';
 
 export class InitialPrompts {
@@ -16,10 +16,10 @@ export class InitialPrompts {
         ]
       }
     ]);
-    
+
     return projectType;
   }
-  
+
   async getProjectName(defaultName?: string): Promise<string> {
     const { projectName } = await inquirer.prompt([
       {
@@ -39,10 +39,10 @@ export class InitialPrompts {
         }
       }
     ]);
-    
+
     return projectName;
   }
-  
+
   async getTypeScript(): Promise<boolean> {
     const { typescript } = await inquirer.prompt([
       {
@@ -52,19 +52,19 @@ export class InitialPrompts {
         default: true
       }
     ]);
-    
+
     return typescript;
   }
-  
+
   async getPackageManager(): Promise<PackageManager> {
     const detector = new PackageManagerDetector();
     const detected = detector.detect();
     const available = await detector.getAvailable();
-    
+
     if (available.length === 1) {
       return available[0];
     }
-    
+
     const { packageManager } = await inquirer.prompt([
       {
         type: 'list',
@@ -77,10 +77,10 @@ export class InitialPrompts {
         }))
       }
     ]);
-    
+
     return packageManager;
   }
-  
+
   async getGitInit(): Promise<boolean> {
     const { git } = await inquirer.prompt([
       {
@@ -90,10 +90,10 @@ export class InitialPrompts {
         default: true
       }
     ]);
-    
+
     return git;
   }
-  
+
   async confirmProceed(): Promise<boolean> {
     const { proceed } = await inquirer.prompt([
       {
@@ -103,7 +103,7 @@ export class InitialPrompts {
         default: true
       }
     ]);
-    
+
     return proceed;
   }
 }

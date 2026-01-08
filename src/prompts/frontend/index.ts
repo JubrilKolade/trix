@@ -6,18 +6,18 @@ import {
   UIComponentLibrary,
   StateManagement,
   APIClient
-} from '../../types/config';
+} from '../../types';
 
 export class FrontendPrompts {
   async collect() {
     const framework = await this.selectFramework();
-    const styling = await this.selectStyling();
-    const auth = await this.selectAuth();
-    const uiComponents = await this.selectUIComponents();
-    const stateManagement = await this.selectStateManagement();
+    const styling = await this.selectStyling(framework);
+    const auth = await this.selectAuth(framework);
+    const uiComponents = await this.selectUIComponents(framework, styling);
+    const stateManagement = await this.selectStateManagement(framework);
     const apiClient = await this.selectAPIClient();
-    const { routing, pwa, testing } = await this.selectAdditionalFeatures();
-    
+    const { routing, pwa, testing } = await this.selectAdditionalFeatures(framework);
+
     return {
       projectType: 'frontend' as const,
       framework,
@@ -31,7 +31,7 @@ export class FrontendPrompts {
       testing
     };
   }
-  
+
   private async selectFramework(): Promise<FrontendFramework> {
     const { framework } = await inquirer.prompt([
       {
@@ -48,28 +48,44 @@ export class FrontendPrompts {
         ]
       }
     ]);
-    
+
     return framework;
   }
-  
-  private async selectStyling(): Promise<StylingFramework> {
+
+  private async selectStyling(framework: FrontendFramework): Promise<StylingFramework> {
+    const choices = this.getStylingChoices(framework);
+
     const { styling } = await inquirer.prompt([
       {
         type: 'list',
         name: 'styling',
         message: 'Choose a styling solution:',
-        choices: [
-          { name: 'Tailwind CSS', value: 'tailwind' },
-          { name: 'Vanilla CSS', value: 'vanilla' },
-          { name: 'Bootstrap', value: 'bootstrap' }
-        ]
+        choices
       }
     ]);
-    
+
     return styling;
   }
-  
-  private async selectAuth(): Promise<FrontendAuthProvider> {
+
+  private getStylingChoices(framework: FrontendFramework) {
+    const common = [
+      { name: 'Tailwind CSS', value: 'tailwind' },
+      { name: 'Vanilla CSS', value: 'vanilla' },
+      { name: 'CSS Modules', value: 'css-modules' },
+      { name: 'Bootstrap', value: 'bootstrap' }
+    ];
+
+    if (framework === 'react' || framework === 'vue') {
+      common.push(
+        { name: 'Styled Components', value: 'styled-components' },
+        { name: 'Emotion', value: 'emotion' }
+      );
+    }
+
+    return common;
+  }
+
+  private async selectAuth(framework: FrontendFramework): Promise<FrontendAuthProvider> {
     const { auth } = await inquirer.prompt([
       {
         type: 'list',
@@ -79,31 +95,64 @@ export class FrontendPrompts {
           { name: 'None', value: 'none' },
           { name: 'Privy', value: 'privy' },
           { name: 'Clerk', value: 'clerk' },
-          { name: 'Auth0', value: 'auth0' }
+          { name: 'Auth0', value: 'auth0' },
+          { name: 'Supabase Auth', value: 'supabase' },
+          { name: 'Firebase Auth', value: 'firebase' }
         ]
       }
     ]);
-    
+
     return auth;
   }
-  
-  private async selectUIComponents(): Promise<UIComponentLibrary[]> {
+
+  private async selectUIComponents(
+    framework: FrontendFramework,
+    styling: StylingFramework
+  ): Promise<UIComponentLibrary[]> {
+    const choices = this.getUIComponentChoices(framework, styling);
+
+    if (choices.length === 0) {
+      return [];
+    }
+
     const { uiComponents } = await inquirer.prompt([
       {
         type: 'checkbox',
         name: 'uiComponents',
         message: 'Select UI component libraries (optional):',
-        choices: [
-          { name: 'shadcn/ui', value: 'shadcn' },
-          { name: 'daisyUI', value: 'daisyui' }
-        ]
+        choices
       }
     ]);
-    
+
     return uiComponents;
   }
-  
-  private async selectStateManagement(): Promise<StateManagement> {
+
+  private getUIComponentChoices(framework: FrontendFramework, styling: StylingFramework) {
+    const choices: Array<{ name: string; value: UIComponentLibrary }> = [];
+
+    if (framework === 'react') {
+      if (styling === 'tailwind') {
+        choices.push(
+          { name: 'shadcn/ui', value: 'shadcn' },
+          { name: 'daisyUI', value: 'daisyui' }
+        );
+      }
+
+      choices.push(
+        { name: 'Material-UI', value: 'material-ui' },
+        { name: 'Chakra UI', value: 'chakra' },
+        { name: 'Ant Design', value: 'ant-design' }
+      );
+    }
+
+    return choices;
+  }
+
+  private async selectStateManagement(framework: FrontendFramework): Promise<StateManagement> {
+    if (framework !== 'react' && framework !== 'vue') {
+      return 'none';
+    }
+
     const { stateManagement } = await inquirer.prompt([
       {
         type: 'list',
@@ -112,14 +161,17 @@ export class FrontendPrompts {
         choices: [
           { name: 'None', value: 'none' },
           { name: 'Zustand', value: 'zustand' },
-          { name: 'Redux Toolkit', value: 'redux' }
+          { name: 'Redux Toolkit', value: 'redux' },
+          { name: 'Jotai', value: 'jotai' },
+          { name: 'Recoil', value: 'recoil' },
+          { name: 'MobX', value: 'mobx' }
         ]
       }
     ]);
-    
+
     return stateManagement;
   }
-  
+
   private async selectAPIClient(): Promise<APIClient> {
     const { apiClient } = await inquirer.prompt([
       {
@@ -127,17 +179,18 @@ export class FrontendPrompts {
         name: 'apiClient',
         message: 'Choose an API client:',
         choices: [
-          { name: 'TanStack Query', value: 'tanstack-query' },
+          { name: 'TanStack Query (React Query)', value: 'tanstack-query' },
+          { name: 'SWR', value: 'swr' },
           { name: 'Axios', value: 'axios' },
-          { name: 'Fetch', value: 'fetch' }
+          { name: 'Native Fetch', value: 'fetch' }
         ]
       }
     ]);
-    
+
     return apiClient;
   }
-  
-  private async selectAdditionalFeatures() {
+
+  private async selectAdditionalFeatures(framework: FrontendFramework) {
     const { features } = await inquirer.prompt([
       {
         type: 'checkbox',
@@ -146,11 +199,11 @@ export class FrontendPrompts {
         choices: [
           { name: 'Routing', value: 'routing', checked: true },
           { name: 'PWA Support', value: 'pwa' },
-          { name: 'Testing Setup', value: 'testing' }
+          { name: 'Testing Setup (Vitest/Jest)', value: 'testing' }
         ]
       }
     ]);
-    
+
     return {
       routing: features.includes('routing'),
       pwa: features.includes('pwa'),

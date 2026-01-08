@@ -20,4 +20,31 @@ export class SpinnerHelper {
       this.spinner = null;
     }
   }
+  
+  warn(text?: string): void {
+    if (this.spinner) {
+      this.spinner.warn(text);
+      this.spinner = null;
+    }
+  }
+  
+  info(text?: string): void {
+    if (this.spinner) {
+      this.spinner.info(text);
+      this.spinner = null;
+    }
+  }
+  
+  update(text: string): void {
+    if (this.spinner) {
+      this.spinner.text = text;
+    }
+  }
+  
+  stop(): void {
+    if (this.spinner) {
+      this.spinner.stop();
+      this.spinner = null;
+    }
+  }
 }

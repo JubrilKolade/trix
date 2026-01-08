@@ -29,4 +29,30 @@ export class ProcessHelper {
       });
     });
   }
+  
+  static async executeInteractive(
+    command: string,
+    args: string[],
+    cwd: string
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const child = spawn(command, args, {
+        cwd,
+        stdio: 'inherit',
+        shell: true
+      });
+      
+      child.on('close', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Command failed with exit code ${code}`));
+        }
+      });
+      
+      child.on('error', (error) => {
+        reject(error);
+      });
+    });
+  }
 }

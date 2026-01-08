@@ -1,3 +1,3 @@
 export * from './config';
-export * from './templates';
-export * from './package-managers';
+export * from './template';
+export * from './package-manager';

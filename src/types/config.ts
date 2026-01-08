@@ -1,4 +1,4 @@
-import { PackageManager } from './package-managers';
+import { PackageManager } from './package-manager';
 
 export type ProjectType = 'frontend' | 'backend' | 'fullstack';
 

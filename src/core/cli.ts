@@ -76,10 +76,7 @@ export class TrixCLI {
       spinner.succeed('Project files generated');
       
       const installer = new DependencyInstaller(projectConfig.packageManager);
-      
-      const installSpinner = ora('Installing dependencies...').start();
-      await installer.installAll(projectConfig.targetDirectory);
-      installSpinner.succeed('Dependencies installed');
+      await this.installDependencies(installer, resolvedConfig, projectConfig.targetDirectory);
       
       if (projectConfig.git) {
         const gitSpinner = ora('Initializing git repository...').start();
@@ -88,12 +85,37 @@ export class TrixCLI {
         gitSpinner.succeed('Git repository initialized');
       }
       
-      this.displaySuccess(projectConfig);
+      this.displaySuccess(projectConfig, resolvedConfig);
       
     } catch (error) {
       this.logger.error('Project creation failed');
       console.error(error);
       process.exit(1);
+    }
+  }
+  
+  private async installDependencies(
+    installer: DependencyInstaller,
+    resolvedConfig: any,
+    targetDir: string
+  ): Promise<void> {
+    const spinner = ora('Installing dependencies...').start();
+    
+    try {
+      await installer.installAll(targetDir);
+      spinner.succeed('Dependencies installed');
+      
+      if (resolvedConfig.postInstallCommands.length > 0) {
+        spinner.start('Running post-install scripts...');
+        for (const command of resolvedConfig.postInstallCommands) {
+          await command.execute(installer, targetDir);
+        }
+        spinner.succeed('Post-install scripts completed');
+      }
+      
+    } catch (error) {
+      spinner.fail('Installation failed');
+      throw error;
     }
   }
   
@@ -113,13 +135,46 @@ export class TrixCLI {
     console.log(chalk.white(`  Name: ${config.projectName}`));
     console.log(chalk.white(`  Type: ${config.projectType}`));
     console.log(chalk.white(`  TypeScript: ${config.typescript ? 'Yes' : 'No'}`));
-    console.log(chalk.white(`  Package Manager: ${config.packageManager}\n`));
+    console.log(chalk.white(`  Package Manager: ${config.packageManager}`));
+    
+    if (config.projectType === 'frontend') {
+      const fe = config as any;
+      console.log(chalk.white(`  Framework: ${fe.framework}`));
+      console.log(chalk.white(`  Styling: ${fe.styling}`));
+      if (fe.auth !== 'none') console.log(chalk.white(`  Auth: ${fe.auth}`));
+      if (fe.uiComponents.length > 0) {
+        console.log(chalk.white(`  UI Components: ${fe.uiComponents.join(', ')}`));
+      }
+    } else if (config.projectType === 'backend') {
+      const be = config as any;
+      console.log(chalk.white(`  Runtime: ${be.runtime}`));
+      console.log(chalk.white(`  Framework: ${be.framework}`));
+      if (be.database !== 'none') console.log(chalk.white(`  Database: ${be.database}`));
+      if (be.orm !== 'none') console.log(chalk.white(`  ORM: ${be.orm}`));
+      console.log(chalk.white(`  API Type: ${be.apiType}`));
+    }
+    
+    console.log('');
   }
   
-  private displaySuccess(config: ProjectConfig): void {
+  private displaySuccess(config: ProjectConfig, resolved: any): void {
     console.log(chalk.green.bold('\n✨ Project created successfully!\n'));
+    
     console.log(chalk.cyan('📂 Next steps:\n'));
     console.log(chalk.white(`  cd ${config.projectName}`));
-    console.log(chalk.white(`  ${config.packageManager} ${PACKAGE_MANAGER_CONFIGS[config.packageManager].run} dev\n`));
+    
+    const pmConfig = PACKAGE_MANAGER_CONFIGS[config.packageManager];
+    console.log(chalk.white(`  ${config.packageManager} ${pmConfig.run} dev`));
+    
+    if (resolved.postInstallMessages.length > 0) {
+      console.log(chalk.yellow('\n⚠️  Important Notes:\n'));
+      resolved.postInstallMessages.forEach((msg: string) => {
+        console.log(chalk.white(`  • ${msg}`));
+      });
+    }
+    
+    console.log(chalk.cyan('\n📚 Documentation:\n'));
+    console.log(chalk.white('  https://trix.dev/docs'));
+    console.log('');
   }
 }
