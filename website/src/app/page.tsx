@@ -54,11 +54,11 @@ export default function LandingPage() {
             <div className="flex flex-col items-center text-center mb-12">
               <div className="h-1 w-20 bg-primary rounded-full mb-4" />
               <h2 className="text-3xl md:text-4xl font-extrabold mb-3">Why Trix</h2>
-              <p className="text-white/60 font-medium max-w-md">Engineered for performance and developer happiness.</p>
+              <p className="text-muted-foreground font-medium max-w-md">Engineered for performance and developer happiness.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((f, i) => (
-                <FeatureCard key={f.title} {...f} index={i} className="backdrop-blur-2xl bg-white/5 border-white/10 hover:bg-white/10 transition-all" />
+                <FeatureCard key={f.title} {...f} index={i} className="backdrop-blur-2xl bg-card border-border/50 hover:bg-card/95 transition-all" />
               ))}
             </div>
           </section>
@@ -68,20 +68,20 @@ export default function LandingPage() {
             <div className="flex flex-col items-center text-center mb-12">
               <div className="h-1 w-20 bg-primary rounded-full mb-4" />
               <h2 className="text-3xl md:text-4xl font-extrabold mb-3">Documentation</h2>
-              <p className="text-white/60 font-medium max-w-md">Master the CLI with our concise, practical guides.</p>
+              <p className="text-muted-foreground font-medium max-w-md">Master the CLI with our concise, practical guides.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {docLinks.map((doc, i) => (
-                <Link key={doc.name} href={doc.href} className="group p-8 rounded-[3rem] bg-white/5 border border-white/10 flex flex-col justify-between hover:border-primary/50 transition-all hover:bg-white/10 min-h-[200px] backdrop-blur-2xl shadow-2xl">
-                  <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 flex items-center justify-center text-white/50 group-hover:bg-primary group-hover:text-white transition-all transform group-hover:rotate-12">
+                <Link key={doc.name} href={doc.href} className="group p-8 rounded-[3rem] bg-card border border-border/50 flex flex-col justify-between hover:border-primary/50 transition-all hover:bg-card/95 min-h-[200px] backdrop-blur-2xl shadow-2xl">
+                  <div className="w-16 h-16 rounded-[1.5rem] bg-card flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all transform group-hover:rotate-12">
                     {doc.icon}
                   </div>
                   <div className="mt-8">
                     <div className="flex items-center justify-between">
                       <h4 className="font-black text-xl tracking-tight">{doc.name}</h4>
-                      <ChevronRight className="w-6 h-6 text-white/20 group-hover:text-primary translate-x-0 group-hover:translate-x-2 transition-all" />
+                      <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:text-primary translate-x-0 group-hover:translate-x-2 transition-all" />
                     </div>
-                    <p className="text-sm font-bold text-white/40 mt-2">{doc.sub}</p>
+                    <p className="text-sm font-bold text-muted-foreground mt-2">{doc.sub}</p>
                   </div>
                 </Link>
               ))}
@@ -90,24 +90,24 @@ export default function LandingPage() {
         </div>
 
         {/* Brand Footer */}
-        <footer className="w-full border-t border-white/5 pt-20 flex flex-col items-center text-center mt-20">
+        <footer className="w-full border-t border-border/50 pt-20 flex flex-col items-center text-center mt-20">
           <div className="flex items-center gap-4 font-bold mb-8 opacity-60">
             <Boxes className="w-8 h-8 text-primary" />
             <span className="text-[14px] tracking-[0.4em] font-black uppercase">Trix CLI Engine</span>
           </div>
-          <p className="text-lg text-white/60 max-w-xl mb-12 leading-relaxed font-bold">
+          <p className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed font-bold">
             The next generation of boilerplate generation. <br />
             Open source and built for absolute speed.
           </p>
           <div className="flex items-center gap-12 mb-16">
-            <Link href="https://github.com" className="text-white/40 hover:text-white transition-all hover:scale-125"><Github className="w-8 h-8" /></Link>
-            <Link href="https://twitter.com" className="text-white/40 hover:text-white transition-all hover:scale-125">
+            <Link href="https://github.com" className="text-muted-foreground hover:text-foreground transition-all hover:scale-125"><Github className="w-8 h-8" /></Link>
+            <Link href="https://twitter.com" className="text-muted-foreground hover:text-foreground transition-all hover:scale-125">
               <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </Link>
           </div>
-          <p className="text-[11px] text-white/20 font-black uppercase tracking-[0.5em] mb-10">© 2026 Trix Labs Inc.</p>
+          <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.5em] mb-10">© 2026 Trix Labs Inc.</p>
         </footer>
       </main>
     </div>

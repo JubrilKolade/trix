@@ -44,7 +44,7 @@ export function Hero() {
                         </p>
 
                         <div className="flex flex-row gap-3 items-center">
-                            <Link href="/docs" className="px-5 py-2 bg-primary text-white rounded-lg font-bold text-sm shadow-sm hover:scale-105 transition-transform">
+                            <Link href="/docs" className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-sm shadow-sm hover:scale-105 transition-transform">
                                 Get Started
                             </Link>
                             <Link href="https://github.com/your-repo/trix" target="_blank" className="px-3 py-2 bg-card text-foreground rounded-md font-semibold text-sm border border-border hover:bg-card/90 transition-all flex items-center gap-2">

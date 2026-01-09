@@ -74,16 +74,16 @@ export default function ExamplesPage() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
                                 <div className="absolute top-4 right-4">
-                                    <span className="text-[9px] font-black bg-white/10 backdrop-blur-md text-white px-3 py-1.5 rounded-full border border-white/20 uppercase tracking-widest">
+                                    <span className="text-[9px] font-black bg-card backdrop-blur-md text-muted-foreground px-3 py-1.5 rounded-full border border-border/20 uppercase tracking-widest">
                                         {ex.status}
                                     </span>
                                 </div>
 
                                 <div className="absolute bottom-6 left-6 flex items-center gap-3">
                                     <div className="w-9 h-9 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/40">
-                                        <Shield className="w-5 h-5 text-white" />
+                                        <Shield className="w-5 h-5 text-foreground" />
                                     </div>
-                                    <span className="text-lg font-black text-white tracking-tight">{ex.name}</span>
+                                    <span className="text-lg font-black text-foreground tracking-tight">{ex.name}</span>
                                 </div>
                             </div>
 
@@ -116,7 +116,7 @@ export default function ExamplesPage() {
                 </div>
 
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-sm z-40">
-                    <button className="w-full h-[60px] bg-primary text-white rounded-[1.5rem] font-black text-base flex items-center justify-center shadow-[0_15px_40px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
+                    <button className="w-full h-[60px] bg-primary text-primary-foreground rounded-[1.5rem] font-black text-base flex items-center justify-center shadow-[0_15px_40px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
                         Try Trix Now
                         <ArrowRight className="w-5 h-5 ml-2.5" />
                     </button>
