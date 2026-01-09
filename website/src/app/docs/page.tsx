@@ -13,9 +13,9 @@ export default function DocsIndex() {
     <div className="min-h-screen text-foreground bg-background selection:bg-primary/30">
       <main className="max-w-4xl mx-auto px-6 py-20">
         <header className="mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-primary font-semibold mb-4">
+          {/* <Link href="/" className="inline-flex items-center gap-2 text-primary font-semibold mb-4">
             <ChevronLeft className="w-4 h-4" /> Back
-          </Link>
+          </Link> */}
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-extrabold">Documentation</h1>
             <p className="text-muted-foreground mt-3">Guides, references, and recipes to get more from Trix.</p>

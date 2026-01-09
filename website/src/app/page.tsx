@@ -8,6 +8,7 @@ import {
   Rocket, Code2, Puzzle, Settings2, Github, Boxes, ChevronRight, Terminal as TerminalIcon
 } from "lucide-react"
 import Link from "next/link"
+import Footer from "@/components/footer"
 
 const features = [
   {
@@ -90,25 +91,7 @@ export default function LandingPage() {
         </div>
 
         {/* Brand Footer */}
-        <footer className="w-full border-t border-border/50 pt-20 flex flex-col items-center text-center mt-20">
-          <div className="flex items-center gap-4 font-bold mb-8 opacity-60">
-            <Boxes className="w-8 h-8 text-primary" />
-            <span className="text-[14px] tracking-[0.4em] font-black uppercase">Trix CLI Engine</span>
-          </div>
-          <p className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed font-bold">
-            The next generation of boilerplate generation. <br />
-            Open source and built for absolute speed.
-          </p>
-          <div className="flex items-center gap-12 mb-16">
-            <Link href="https://github.com" className="text-muted-foreground hover:text-foreground transition-all hover:scale-125"><Github className="w-8 h-8" /></Link>
-            <Link href="https://twitter.com" className="text-muted-foreground hover:text-foreground transition-all hover:scale-125">
-              <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </Link>
-          </div>
-          <p className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.5em] mb-10">© 2026 Trix Labs Inc.</p>
-        </footer>
+        <Footer />
       </main>
     </div>
   )

@@ -172,10 +172,10 @@ export default function DocsLayout({
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="prose prose-slate dark:prose-invert max-w-none 
-                prose-headings:font-black prose-headings:tracking-tighter
-                prose-p:text-[15px] prose-p:leading-relaxed prose-p:font-semibold prose-p:text-muted-foreground/80
-                prose-a:no-underline prose-a:font-bold prose-code:text-primary prose-code:font-bold
-                prose-pre:bg-[var(--color-cli-bg)] prose-pre:border prose-pre:border-border/50 prose-pre:rounded-3xl"
+                        prose-headings:font-black prose-headings:tracking-tighter prose-headings:text-foreground
+                        prose-p:text-[15px] prose-p:leading-relaxed prose-p:font-semibold prose-p:text-muted-foreground/80
+                        prose-a:no-underline prose-a:font-bold prose-a:text-primary prose-code:text-primary prose-code:font-bold
+                        prose-pre:bg-[var(--color-cli-bg)] prose-pre:border prose-pre:border-border/50 prose-pre:rounded-3xl"
                         >
                             {children}
                         </motion.article>

@@ -26,7 +26,7 @@ export function Navbar() {
                         </div>
                         <div className="flex flex-col leading-none">
                             <span>Trix</span>
-                            <span className="text-[10px] font-black text-muted tracking-[0.1em] mt-0.5">CLI ENGINE</span>
+                            {/* <span className="text-[10px] font-black text-muted tracking-[0.1em] mt-0.5">CLI ENGINE</span> */}
                         </div>
                     </Link>
 

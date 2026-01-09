@@ -51,7 +51,7 @@ export default function ExamplesPage() {
                 </button>
             </header>
 
-            <main className="pt-24 px-6 pb-32 max-w-xl mx-auto">
+            <main className="pt-24 px-6 pb-32 max-w-6xl mx-auto">
                 <div className="mb-12">
                     <h1 className="text-3xl font-black tracking-tighter mb-4 text-foreground">Premium Stacks</h1>
                     <p className="text-[14px] text-muted-foreground leading-relaxed font-semibold">
@@ -59,7 +59,7 @@ export default function ExamplesPage() {
                     </p>
                 </div>
 
-                <div className="space-y-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {examples.map((ex, i) => (
                         <motion.div
                             key={ex.name}
@@ -67,7 +67,7 @@ export default function ExamplesPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
                             viewport={{ once: true }}
-                            className="group p-1 rounded-[2.5rem] bg-card border border-border/50 overflow-hidden stiff-shadow hover:border-primary/50 transition-all cursor-pointer"
+                            className="group p-1 rounded-[2.5rem] bg-card border border-border/50 overflow-hidden stiff-shadow hover:border-primary/50 transition-all cursor-pointer h-full"
                         >
                             <div className="relative aspect-[16/10] rounded-[2.25rem] overflow-hidden mb-6">
                                 <img src={ex.image} alt={ex.name} className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-110 group-hover:scale-100" />
