@@ -175,7 +175,7 @@ export default function DocsLayout({
                         prose-headings:font-black prose-headings:tracking-tighter prose-headings:text-foreground
                         prose-p:text-[15px] prose-p:leading-relaxed prose-p:font-semibold prose-p:text-muted-foreground/80
                         prose-a:no-underline prose-a:font-bold prose-a:text-primary prose-code:text-primary prose-code:font-bold
-                        prose-pre:bg-[var(--color-cli-bg)] prose-pre:border prose-pre:border-border/50 prose-pre:rounded-3xl"
+                        prose-pre:bg-(--color-cli-bg) prose-pre:border prose-pre:border-border/50 prose-pre:rounded-3xl"
                         >
                             {children}
                         </motion.article>

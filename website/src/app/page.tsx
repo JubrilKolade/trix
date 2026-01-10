@@ -47,7 +47,7 @@ export default function LandingPage() {
 
       <Hero />
 
-      <main className="max-w-[1200px] mx-auto relative z-10 px-6 pb-24">
+      <main className="max-w-300 mx-auto relative z-10 px-6 pb-24">
         {/* Features Content Sections */}
         <div className="w-full relative z-10 pt-20">
           {/* Features Grid */}
@@ -73,7 +73,7 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {docLinks.map((doc, i) => (
-                <Link key={doc.name} href={doc.href} className="group p-8 rounded-[3rem] bg-card border border-border/50 flex flex-col justify-between hover:border-primary/50 transition-all hover:bg-card/95 min-h-[200px] backdrop-blur-2xl shadow-2xl">
+                <Link key={doc.name} href={doc.href} className="group p-8 rounded-[3rem] bg-card border border-border/50 flex flex-col justify-between hover:border-primary/50 transition-all hover:bg-card/95 min-h-50 backdrop-blur-2xl shadow-2xl">
                   <div className="w-16 h-16 rounded-[1.5rem] bg-card flex items-center justify-center text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-all transform group-hover:rotate-12">
                     {doc.icon}
                   </div>

@@ -69,9 +69,9 @@ export default function ExamplesPage() {
                             viewport={{ once: true }}
                             className="group p-1 rounded-[2.5rem] bg-card border border-border/50 overflow-hidden stiff-shadow hover:border-primary/50 transition-all cursor-pointer h-full"
                         >
-                            <div className="relative aspect-[16/10] rounded-[2.25rem] overflow-hidden mb-6">
+                            <div className="relative aspect-16/10 rounded-[2.25rem] overflow-hidden mb-6">
                                 <img src={ex.image} alt={ex.name} className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-110 group-hover:scale-100" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent" />
 
                                 <div className="absolute top-4 right-4">
                                     <span className="text-[9px] font-black bg-card backdrop-blur-md text-muted-foreground px-3 py-1.5 rounded-full border border-border/20 uppercase tracking-widest">
@@ -116,7 +116,7 @@ export default function ExamplesPage() {
                 </div>
 
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-sm z-40">
-                    <button className="w-full h-[60px] bg-primary text-primary-foreground rounded-[1.5rem] font-black text-base flex items-center justify-center shadow-[0_15px_40px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
+                    <button className="w-full h-15 bg-primary text-primary-foreground rounded-[1.5rem] font-black text-base flex items-center justify-center shadow-[0_15px_40px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
                         Try Trix Now
                         <ArrowRight className="w-5 h-5 ml-2.5" />
                     </button>
