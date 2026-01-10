@@ -12,7 +12,7 @@ interface CLITerminalProps {
 }
 
 export function CLITerminal({
-    command = "create-trix",
+    command = "npx create-trix",
     animated = false,
     showControls = true,
     className = ""

@@ -42,7 +42,7 @@ Get your project up and running in minutes:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-repo/trix.git
+git clone https://github.com/JubrilKolade/trix.git
 cd trix
 
 # 2. Install and build
