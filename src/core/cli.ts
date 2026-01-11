@@ -4,10 +4,11 @@ import { BackendPrompts } from '../prompts/backend/index.js';
 import { MobilePrompts } from '../prompts/mobile/index.js';
 import { ConfigurationBuilder } from './config-builder.js';
 import { FileGenerator } from '../generators/file-generator.js';
+import { FlutterGenerator } from '../generators/flutter-generator.js';
 import { DependencyInstaller } from '../installers/dependency-installer.js';
 import { Logger } from './logger.js';
 import { GitHelper } from '../utils/git.js';
-import { ProjectConfig } from '../types/config.js';
+import { ProjectConfig, FlutterConfig } from '../types/config.js';
 import { PACKAGE_MANAGER_CONFIGS } from '../installers/package-manager.js';
 import chalk from 'chalk';
 import ora from 'ora';
@@ -19,6 +20,7 @@ export class TrixCLI {
   private mobilePrompts: MobilePrompts;
   private configBuilder: ConfigurationBuilder;
   private fileGenerator: FileGenerator;
+  private flutterGenerator: FlutterGenerator;
   private logger: Logger;
   private gitHelper: GitHelper;
 
@@ -29,6 +31,7 @@ export class TrixCLI {
     this.mobilePrompts = new MobilePrompts();
     this.configBuilder = new ConfigurationBuilder();
     this.fileGenerator = new FileGenerator();
+    this.flutterGenerator = new FlutterGenerator();
     this.logger = new Logger();
     this.gitHelper = new GitHelper();
   }
@@ -40,32 +43,62 @@ export class TrixCLI {
 
       const projectName = args[0] || await this.initialPrompts.getProjectName();
       const projectType = await this.initialPrompts.getProjectType();
-      const typescript = await this.initialPrompts.getTypeScript();
-      const packageManager = await this.initialPrompts.getPackageManager();
-      const git = await this.initialPrompts.getGitInit();
-
-      const baseConfig = {
-        projectName,
-        projectType,
-        typescript,
-        packageManager,
-        git,
-        targetDirectory: `./${projectName}`
-      };
 
       let projectConfig: ProjectConfig;
 
-      if (projectType === 'frontend') {
-        const frontendConfig = await this.frontendPrompts.collect();
-        projectConfig = { ...baseConfig, ...frontendConfig };
-      } else if (projectType === 'backend') {
-        const backendConfig = await this.backendPrompts.collect();
-        projectConfig = { ...baseConfig, ...backendConfig };
-      } else if (projectType === 'mobile') {
+      if (projectType === 'mobile') {
+        // For mobile, ask framework first to determine if Flutter or React Native
         const mobileConfig = await this.mobilePrompts.collect();
-        projectConfig = { ...baseConfig, ...mobileConfig };
+
+        if (mobileConfig.framework === 'flutter') {
+          // Flutter uses Dart, not TypeScript, and uses pub instead of npm
+          const git = await this.initialPrompts.getGitInit();
+          projectConfig = {
+            projectName,
+            typescript: false, // Flutter uses Dart
+            packageManager: 'npm', // Not used for Flutter, but required by type
+            git,
+            targetDirectory: `./${projectName}`,
+            ...mobileConfig
+          } as ProjectConfig;
+        } else {
+          // React Native - ask for TypeScript and package manager
+          const typescript = await this.initialPrompts.getTypeScript();
+          const packageManager = await this.initialPrompts.getPackageManager();
+          const git = await this.initialPrompts.getGitInit();
+          projectConfig = {
+            projectName,
+            typescript,
+            packageManager,
+            git,
+            targetDirectory: `./${projectName}`,
+            ...mobileConfig
+          };
+        }
       } else {
-        throw new Error('Fullstack not yet implemented');
+        // Frontend/Backend - normal flow
+        const typescript = await this.initialPrompts.getTypeScript();
+        const packageManager = await this.initialPrompts.getPackageManager();
+        const git = await this.initialPrompts.getGitInit();
+
+        const baseConfig = {
+          projectName,
+          projectType,
+          typescript,
+          packageManager,
+          git,
+          targetDirectory: `./${projectName}`
+        };
+
+        if (projectType === 'frontend') {
+          const frontendConfig = await this.frontendPrompts.collect();
+          projectConfig = { ...baseConfig, ...frontendConfig };
+        } else if (projectType === 'backend') {
+          const backendConfig = await this.backendPrompts.collect();
+          projectConfig = { ...baseConfig, ...backendConfig };
+        } else {
+          throw new Error('Fullstack not yet implemented');
+        }
       }
 
       this.logger.step('Building configuration...');
@@ -78,12 +111,25 @@ export class TrixCLI {
         return;
       }
 
-      const spinner = ora('Generating project files...').start();
-      await this.fileGenerator.generateProject(resolvedConfig);
-      spinner.succeed('Project files generated');
+      // Handle Flutter projects differently
+      if (projectConfig.projectType === 'mobile' && (projectConfig as any).framework === 'flutter') {
+        const spinner = ora('Creating Flutter project...').start();
+        await this.flutterGenerator.generateProject(projectConfig as FlutterConfig);
+        spinner.succeed('Flutter project created');
 
-      const installer = new DependencyInstaller(projectConfig.packageManager);
-      await this.installDependencies(installer, resolvedConfig, projectConfig.targetDirectory);
+        // Run flutter pub get
+        const pubSpinner = ora('Running flutter pub get...').start();
+        const { execa } = await import('execa');
+        await execa('flutter', ['pub', 'get'], { cwd: projectConfig.targetDirectory });
+        pubSpinner.succeed('Dependencies installed');
+      } else {
+        const spinner = ora('Generating project files...').start();
+        await this.fileGenerator.generateProject(resolvedConfig);
+        spinner.succeed('Project files generated');
+
+        const installer = new DependencyInstaller(projectConfig.packageManager);
+        await this.installDependencies(installer, resolvedConfig, projectConfig.targetDirectory);
+      }
 
       if (projectConfig.git) {
         const gitSpinner = ora('Initializing git repository...').start();
@@ -162,11 +208,22 @@ export class TrixCLI {
     } else if (config.projectType === 'mobile') {
       const mb = config as any;
       console.log(chalk.white(`  Framework: ${mb.framework}`));
-      if (mb.navigation !== 'none') console.log(chalk.white(`  Navigation: ${mb.navigation}`));
-      console.log(chalk.white(`  Styling: ${mb.styling}`));
-      if (mb.stateManagement !== 'none') console.log(chalk.white(`  State: ${mb.stateManagement}`));
-      console.log(chalk.white(`  API Client: ${mb.apiClient}`));
-      if (mb.auth !== 'none') console.log(chalk.white(`  Auth: ${mb.auth}`));
+
+      if (mb.framework === 'flutter') {
+        // Flutter-specific summary
+        if (mb.stateManagement !== 'none') console.log(chalk.white(`  State: ${mb.stateManagement}`));
+        if (mb.navigation !== 'none') console.log(chalk.white(`  Navigation: ${mb.navigation}`));
+        console.log(chalk.white(`  HTTP Client: ${mb.httpClient}`));
+        if (mb.auth !== 'none') console.log(chalk.white(`  Auth: ${mb.auth}`));
+        console.log(chalk.white(`  Platforms: ${mb.platforms.join(', ')}`));
+      } else {
+        // React Native summary
+        if (mb.navigation !== 'none') console.log(chalk.white(`  Navigation: ${mb.navigation}`));
+        console.log(chalk.white(`  Styling: ${mb.styling}`));
+        if (mb.stateManagement !== 'none') console.log(chalk.white(`  State: ${mb.stateManagement}`));
+        console.log(chalk.white(`  API Client: ${mb.apiClient}`));
+        if (mb.auth !== 'none') console.log(chalk.white(`  Auth: ${mb.auth}`));
+      }
     }
 
     console.log('');
