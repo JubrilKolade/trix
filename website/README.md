@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trix Website — Docs & Community 🌐
 
-## Getting Started
+This repository contains the Trix documentation website (built with Next.js and MDX) used for the official docs, examples, and community pages for the Trix CLI project.
 
-First, run the development server:
+This README covers how to run the site locally, add documentation and examples, and deploy updates.
+
+---
+
+## 🔧 Quick start (local development)
+
+1. Install dependencies:
+
+```bash
+# from the website directory
+npm install
+```
+
+2. Run the dev server (hot reload):
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Notes:
+- The site uses the App Router and MDX for docs. Page files live under `src/app/`.
+- Components live in `src/components/` and styles are in `src/app/globals.css`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Build and preview (production)
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This runs Next.js production build and serves the site locally.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🧾 Adding or editing documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Docs are implemented inside `src/app/docs/` and as React/MDX pages.
+- To add a new docs page, create `src/app/docs/<slug>/page.mdx` or `page.tsx`.
+- Use the existing layouts (`src/app/docs/layout.tsx`) and components (`src/components/*`) to keep style and navigation consistent.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Workflow:
+1. Create or edit a page. 2. Run `npm run dev` to preview locally. 3. Open a pull request.
+
+---
+
+## 🎨 Design tokens & theming
+
+- Global design tokens and theme variables are defined in `src/app/globals.css` (CSS variables and Tailwind config).
+- Use theme-aware classes like `text-foreground`, `bg-card`, `border-border` to ensure light/dark compatibility.
+
+---
+
+## ✅ Contributing & content guidelines
+
+- Add a clear title, short description, and example snippet where relevant.
+- Keep copy concise and focused on how to use the CLI or feature.
+- For API/CLI docs, include commands and expected outputs.
+- Ensure accessibility (`alt` text for images, semantic headings) and test on both light and dark themes.
+
+---
+
+## 🚀 Deployment
+
+Recommended: Deploy on Vercel (first-class Next.js support).
+- Connect the repository in Vercel, set the root to the `website` project (if monorepo), and use `npm run build` as the build command.
+
+Alternatively, you can deploy any Node-compatible hosting by building (`npm run build`) and running `npm run start`.
+
+---
+
+## 🧪 Tests & linting
+
+- Linting is available via `npm run lint` (project uses ESLint). Add tests where appropriate and run them in CI.
+
+---
+
+## 🗂️ Notable files
+
+- `src/app/page.tsx` — landing page
+- `src/app/docs/` — docs index, pages, and layout
+- `src/components/` — UI components used across the site
+- `src/app/globals.css` — theme variables & Tailwind integration
+- `package.json` — scripts: `dev`, `build`, `start`, `lint`
+
+---
+
+## 📣 Want me to do this for you?
+- I can add a CONTRIBUTING.md for docs, set up a PR template, or add a GitHub Action to build and preview preview deployments automatically.
+
+---
+
+© 2026 Trix Labs — built with ❤️
+

@@ -10,7 +10,7 @@ import { useState } from "react"
 import Link from "next/link"
 
 const setupSteps = [
-    { id: 1, title: "Fork & Clone", sub: "Clone your forked repository to your local machine.", code: "git clone https://github.com/trix-cli/trix" },
+    { id: 1, title: "Fork & Clone", sub: "Clone your forked repository to your local machine.", code: "git clone https://github.com/JubrilKolade/trix" },
     { id: 2, title: "Install Dependencies", sub: "Install the required node modules.", code: "npm install", warning: "Make sure you are running Node v18 or higher." },
     { id: 3, title: "Local Link", sub: "Link the package locally to test CLI commands.", code: "npm link" },
 ]

@@ -45,7 +45,7 @@ export function Navbar() {
                             <Menu className="w-6 h-6" />
                         </button>
                         <div className="h-5 w-px bg-border mx-2 hidden md:block" />
-                        <Link href="https://github.com/your-repo/trix" target="_blank" className="hidden md:block p-2.5 text-muted hover:text-foreground transition-all hover:scale-110">
+                        <Link href="https://github.com/JubrilKolade/trix" target="_blank" className="hidden md:block p-2.5 text-muted hover:text-foreground transition-all hover:scale-110">
                             <Github className="w-6 h-6" />
                         </Link>
                     </div>
@@ -68,7 +68,7 @@ export function Navbar() {
                         </Link>
                     ))}
                     <div className="h-px bg-border" />
-                    <Link href="https://github.com/your-repo/trix" target="_blank" className="flex items-center gap-3 text-primary">
+                    <Link href="https://github.com/JubrilKolade/trix" target="_blank" className="flex items-center gap-3 text-primary">
                         <Github className="w-5 h-5" /> Source Code
                     </Link>
                 </motion.div>

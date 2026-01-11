@@ -3,8 +3,8 @@
   <p><strong>Universal Project Generator for Modern Web Applications</strong></p>
 
   [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/your-repo/trix)
-  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/your-repo/trix/pulls)
+  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/JubrilKolade/trix)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/JubrilKolade/trix/pulls)
 </div>
 
 ---
