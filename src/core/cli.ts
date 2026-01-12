@@ -101,8 +101,15 @@ export class TrixCLI {
         }
       }
 
-      this.logger.step('Building configuration...');
-      const resolvedConfig = await this.configBuilder.buildConfiguration(projectConfig);
+      // Check if this is a Flutter project - handle differently
+      const isFlutter = projectConfig.projectType === 'mobile' && (projectConfig as any).framework === 'flutter';
+
+      // Skip config builder for Flutter - it doesn't use module.json templates
+      let resolvedConfig: any = null;
+      if (!isFlutter) {
+        this.logger.step('Building configuration...');
+        resolvedConfig = await this.configBuilder.buildConfiguration(projectConfig);
+      }
 
       this.displaySummary(projectConfig);
       const proceed = await this.initialPrompts.confirmProceed();
@@ -112,7 +119,7 @@ export class TrixCLI {
       }
 
       // Handle Flutter projects differently
-      if (projectConfig.projectType === 'mobile' && (projectConfig as any).framework === 'flutter') {
+      if (isFlutter) {
         const spinner = ora('Creating Flutter project...').start();
         await this.flutterGenerator.generateProject(projectConfig as FlutterConfig);
         spinner.succeed('Flutter project created');
@@ -122,6 +129,15 @@ export class TrixCLI {
         const { execa } = await import('execa');
         await execa('flutter', ['pub', 'get'], { cwd: projectConfig.targetDirectory });
         pubSpinner.succeed('Dependencies installed');
+
+        if (projectConfig.git) {
+          const gitSpinner = ora('Initializing git repository...').start();
+          await this.gitHelper.init(projectConfig.targetDirectory);
+          await this.gitHelper.initialCommit(projectConfig.targetDirectory);
+          gitSpinner.succeed('Git repository initialized');
+        }
+
+        this.displayFlutterSuccess(projectConfig as FlutterConfig);
       } else {
         const spinner = ora('Generating project files...').start();
         await this.fileGenerator.generateProject(resolvedConfig);
@@ -129,16 +145,16 @@ export class TrixCLI {
 
         const installer = new DependencyInstaller(projectConfig.packageManager);
         await this.installDependencies(installer, resolvedConfig, projectConfig.targetDirectory);
-      }
 
-      if (projectConfig.git) {
-        const gitSpinner = ora('Initializing git repository...').start();
-        await this.gitHelper.init(projectConfig.targetDirectory);
-        await this.gitHelper.initialCommit(projectConfig.targetDirectory);
-        gitSpinner.succeed('Git repository initialized');
-      }
+        if (projectConfig.git) {
+          const gitSpinner = ora('Initializing git repository...').start();
+          await this.gitHelper.init(projectConfig.targetDirectory);
+          await this.gitHelper.initialCommit(projectConfig.targetDirectory);
+          gitSpinner.succeed('Git repository initialized');
+        }
 
-      this.displaySuccess(projectConfig, resolvedConfig);
+        this.displaySuccess(projectConfig, resolvedConfig);
+      }
 
     } catch (error) {
       this.logger.error('Project creation failed');
@@ -247,6 +263,29 @@ export class TrixCLI {
 
     console.log(chalk.cyan('\n📚 Documentation:\n'));
     console.log(chalk.white('  https://trix.dev/docs'));
+    console.log('');
+  }
+
+  private displayFlutterSuccess(config: FlutterConfig): void {
+    console.log(chalk.green.bold('\n✨ Flutter project created successfully!\n'));
+
+    console.log(chalk.cyan('📂 Next steps:\n'));
+    console.log(chalk.white(`  cd ${config.projectName}`));
+    console.log(chalk.white('  flutter run'));
+
+    console.log(chalk.yellow('\n⚠️  Available commands:\n'));
+    console.log(chalk.white('  flutter run              # Run on connected device'));
+    console.log(chalk.white('  flutter run -d chrome    # Run on web'));
+    console.log(chalk.white('  flutter build apk        # Build Android APK'));
+    console.log(chalk.white('  flutter build ios        # Build iOS app'));
+
+    if (config.stateManagement === 'riverpod' || config.navigation === 'auto-route') {
+      console.log(chalk.yellow('\n⚠️  Code generation required:\n'));
+      console.log(chalk.white('  flutter pub run build_runner build'));
+    }
+
+    console.log(chalk.cyan('\n📚 Documentation:\n'));
+    console.log(chalk.white('  https://flutter.dev/docs'));
     console.log('');
   }
 }
