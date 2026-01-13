@@ -20,6 +20,15 @@ export default function DocsIndex() {
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-extrabold">Documentation</h1>
             <p className="text-muted-foreground mt-3">Guides, references, and recipes to get more from Trix.</p>
+
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Trix is an interactive project generator that helps you scaffold full‑stack apps quickly — with TypeScript, plugins, and optional mobile support for React Native and Flutter.
+            </p>
+
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <Link href="/docs/quick-start" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold">Quick Start</Link>
+              <Link href="/docs/mobile" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary/80">Mobile Guides</Link>
+            </div>
           </div>
         </header>
 
