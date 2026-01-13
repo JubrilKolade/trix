@@ -1,10 +1,11 @@
-import { Rocket, Terminal as TerminalIcon, Settings2, Puzzle, ChevronLeft } from "lucide-react"
+import { Rocket, Terminal as TerminalIcon, Settings2, Puzzle, ChevronLeft, Boxes } from "lucide-react"
 import Link from "next/link"
 
 const docs = [
   { name: "Quick Start", href: "/docs/quick-start", desc: "Installation and first steps", icon: <Rocket className="w-5 h-5" /> },
   { name: "CLI Reference", href: "/docs/commands", desc: "All available commands and flags", icon: <TerminalIcon className="w-5 h-5" /> },
   { name: "Configuration", href: "/docs/config", desc: "trix.config.js options", icon: <Settings2 className="w-5 h-5" /> },
+  { name: "Mobile", href: "/docs/mobile", desc: "React Native & Flutter guides", icon: <Boxes className="w-5 h-5" /> },
   { name: "Plugins", href: "/docs/advanced/templates", desc: "Browse official plugins", icon: <Puzzle className="w-5 h-5" /> },
 ]
 
