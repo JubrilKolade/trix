@@ -37,6 +37,7 @@ const docLinks = [
   { name: "Quick Start", sub: "Installation and first steps", href: "/docs/quick-start", icon: <Rocket className="w-5 h-5" /> },
   { name: "CLI Reference", sub: "All available commands and flags", href: "/docs/commands", icon: <TerminalIcon className="w-5 h-5" /> },
   { name: "Configuration", sub: "trix.config.js options", href: "/docs/config", icon: <Settings2 className="w-5 h-5" /> },
+  { name: "Mobile", sub: "React Native & Flutter guides", href: "/docs/mobile", icon: <Boxes className="w-5 h-5" /> },
   { name: "Plugins", sub: "Browse official plugins", href: "/docs/advanced/templates", icon: <Puzzle className="w-5 h-5" /> },
 ]
 
