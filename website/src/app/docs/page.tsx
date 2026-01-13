@@ -34,7 +34,13 @@ export default function DocsIndex() {
 
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {docs.map((d) => (
-            <Link key={d.name} href={d.href} className="group p-5 rounded-lg bg-card border border-border hover:border-primary transition-all">
+            <Link key={d.name} href={d.href} className="relative group p-5 rounded-lg bg-card border border-border hover:border-primary transition-all">
+              {d.name === 'Mobile' && (
+                <div className="absolute right-4 top-4">
+                  <span className="inline-flex items-center gap-2 px-2 py-1 rounded-full text-[11px] font-bold bg-amber-400 text-black">Experimental</span>
+                </div>
+              )}
+
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center text-primary">{d.icon}</div>
                 <div>
@@ -43,7 +49,7 @@ export default function DocsIndex() {
                 </div>
               </div>
             </Link>
-          ))}
+          ))} 
         </section>
 
         <section className="mt-12 text-sm text-muted-foreground">
