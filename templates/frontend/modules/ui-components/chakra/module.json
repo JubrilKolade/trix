@@ -1,0 +1,29 @@
+{
+    "name": "chakra",
+    "type": "ui-components",
+    "files": [],
+    "dependencies": {
+        "prod": {
+            "@chakra-ui/react": "^2.8.2",
+            "@emotion/react": "^11.11.1",
+            "@emotion/styled": "^11.11.0",
+            "framer-motion": "^10.16.4"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { ChakraProvider } from '@chakra-ui/react';"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<ChakraProvider>"
+        }
+    ],
+    "compatibleWith": [
+        "react"
+    ]
+}

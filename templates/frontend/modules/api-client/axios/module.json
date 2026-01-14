@@ -1,0 +1,17 @@
+{
+    "name": "axios",
+    "type": "api-client",
+    "files": [
+        {
+            "source": "frontend/modules/api-client/axios/axios.ts",
+            "destination": "src/lib/api.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "axios": "^1.6.0"
+        },
+        "dev": {}
+    }
+}

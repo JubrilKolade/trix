@@ -1,0 +1,17 @@
+{
+    "name": "swr",
+    "type": "api-client",
+    "files": [
+        {
+            "source": "frontend/modules/api-client/swr/fetcher.ts",
+            "destination": "src/lib/fetcher.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "swr": "^2.2.0"
+        },
+        "dev": {}
+    }
+}

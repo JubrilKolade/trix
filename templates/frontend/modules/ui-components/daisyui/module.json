@@ -1,0 +1,21 @@
+{
+    "name": "daisyui",
+    "type": "ui-components",
+    "files": [],
+    "dependencies": {
+        "prod": {},
+        "dev": {
+            "daisyui": "^4.4.19"
+        }
+    },
+    "injections": [
+        {
+            "file": "tailwind.config.js",
+            "position": "config",
+            "code": "plugins: [require(\"daisyui\")],"
+        }
+    ],
+    "compatibleWith": [
+        "tailwind"
+    ]
+}

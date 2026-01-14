@@ -1,0 +1,31 @@
+{
+    "name": "tanstack-router",
+    "type": "routing",
+    "files": [
+        {
+            "source": "frontend/modules/routing/tanstack-router/router.ts",
+            "destination": "src/router.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "@tanstack/react-router": "^1.15.0"
+        },
+        "dev": {
+            "@tanstack/router-vite-plugin": "^1.15.0"
+        }
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { RouterProvider } from '@tanstack/react-router';\nimport { router } from './router';"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<RouterProvider router={router} />"
+        }
+    ]
+}

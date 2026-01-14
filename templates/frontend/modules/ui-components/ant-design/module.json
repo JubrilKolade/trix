@@ -1,0 +1,26 @@
+{
+    "name": "ant-design",
+    "type": "ui-components",
+    "files": [],
+    "dependencies": {
+        "prod": {
+            "antd": "^5.12.0"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { ConfigProvider } from 'antd';"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<ConfigProvider theme={{ token: { primaryColor: '#1677ff' } }}>"
+        }
+    ],
+    "compatibleWith": [
+        "react"
+    ]
+}

@@ -65,6 +65,9 @@ export class CodeInjector {
             case 'config':
                 return this.injectConfig(content, injection.code);
 
+            case 'append':
+                return this.appendCode(content, injection.code);
+
             case 'custom':
                 if (injection.marker) {
                     return this.injectAtMarker(content, injection.code, injection.marker);
@@ -117,5 +120,9 @@ export class CodeInjector {
         }
 
         return content;
+    }
+
+    private appendCode(content: string, code: string): string {
+        return content.endsWith('\n') ? content + code : content + '\n' + code;
     }
 }

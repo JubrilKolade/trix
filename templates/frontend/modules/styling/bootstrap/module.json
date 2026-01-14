@@ -1,0 +1,18 @@
+{
+    "name": "bootstrap",
+    "type": "styling",
+    "files": [],
+    "dependencies": {
+        "prod": {
+            "bootstrap": "^5.3.2"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import 'bootstrap/dist/css/bootstrap.min.css';"
+        }
+    ]
+}
