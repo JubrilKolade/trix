@@ -28,7 +28,8 @@
     "dev": "tsc --watch",
     "prepublishOnly": "npm run build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:unit": "jest --runInBand --testPathPattern=tests/unit"
   },
   "dependencies": {
     "chalk": "^5.3.0",
