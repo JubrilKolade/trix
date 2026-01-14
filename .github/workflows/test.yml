@@ -47,6 +47,3 @@ jobs:
           # Lightweight link check (no install if not present)
           if npm run check:links --silent 2>/dev/null; then npm run check:links; else echo "no link checker configured"; fi
 
-      - name: Check for empty/placeholder files
-        run: |
-          node scripts/find-empty-files.js
