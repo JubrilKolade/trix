@@ -12,7 +12,7 @@ interface CLITerminalProps {
 }
 
 export function CLITerminal({
-    command = "create-trix",
+    command = "npx create-trix",
     animated = false,
     showControls = true,
     className = ""
@@ -54,7 +54,7 @@ export function CLITerminal({
                         <div className="flex-1 text-[10px] text-muted-foreground font-mono text-center uppercase tracking-widest opacity-50">Terminal</div>
                     </div>
                 )}
-                <div className="p-6 font-mono text-[13px] leading-relaxed relative min-h-[100px]">
+                <div className="p-6 font-mono text-[13px] leading-relaxed relative min-h-25">
                     <div className="flex items-center gap-3">
                         <span className="text-primary font-bold">$</span>
                         <span className="text-foreground font-bold">

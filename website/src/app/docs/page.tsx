@@ -1,10 +1,11 @@
-import { Rocket, Terminal as TerminalIcon, Settings2, Puzzle, ChevronLeft } from "lucide-react"
+import { Rocket, Terminal as TerminalIcon, Settings2, Puzzle, ChevronLeft, Boxes } from "lucide-react"
 import Link from "next/link"
 
 const docs = [
   { name: "Quick Start", href: "/docs/quick-start", desc: "Installation and first steps", icon: <Rocket className="w-5 h-5" /> },
   { name: "CLI Reference", href: "/docs/commands", desc: "All available commands and flags", icon: <TerminalIcon className="w-5 h-5" /> },
   { name: "Configuration", href: "/docs/config", desc: "trix.config.js options", icon: <Settings2 className="w-5 h-5" /> },
+  { name: "Mobile", href: "/docs/mobile", desc: "React Native & Flutter guides", icon: <Boxes className="w-5 h-5" /> },
   { name: "Plugins", href: "/docs/advanced/templates", desc: "Browse official plugins", icon: <Puzzle className="w-5 h-5" /> },
 ]
 
@@ -19,12 +20,27 @@ export default function DocsIndex() {
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-extrabold">Documentation</h1>
             <p className="text-muted-foreground mt-3">Guides, references, and recipes to get more from Trix.</p>
+
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Trix is an interactive project generator that helps you scaffold full‑stack apps quickly — with TypeScript, plugins, and optional mobile support for React Native and Flutter.
+            </p>
+
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <Link href="/docs/quick-start" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold">Quick Start</Link>
+              <Link href="/docs/mobile" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary/80">Mobile Guides</Link>
+            </div>
           </div>
         </header>
 
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {docs.map((d) => (
-            <Link key={d.name} href={d.href} className="group p-5 rounded-lg bg-card border border-border hover:border-primary transition-all">
+            <Link key={d.name} href={d.href} className="relative group p-5 rounded-lg bg-card border border-border hover:border-primary transition-all">
+              {d.name === 'Mobile' && (
+                <div className="absolute right-4 top-4">
+                  <span className="inline-flex items-center gap-2 px-2 py-1 rounded-full text-[11px] font-bold bg-amber-400 text-black">Experimental</span>
+                </div>
+              )}
+
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center text-primary">{d.icon}</div>
                 <div>
@@ -33,7 +49,7 @@ export default function DocsIndex() {
                 </div>
               </div>
             </Link>
-          ))}
+          ))} 
         </section>
 
         <section className="mt-12 text-sm text-muted-foreground">

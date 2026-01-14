@@ -10,7 +10,7 @@ import { useState } from "react"
 import Link from "next/link"
 
 const setupSteps = [
-    { id: 1, title: "Fork & Clone", sub: "Clone your forked repository to your local machine.", code: "git clone https://github.com/trix-cli/trix" },
+    { id: 1, title: "Fork & Clone", sub: "Clone your forked repository to your local machine.", code: "git clone https://github.com/JubrilKolade/trix" },
     { id: 2, title: "Install Dependencies", sub: "Install the required node modules.", code: "npm install", warning: "Make sure you are running Node v18 or higher." },
     { id: 3, title: "Local Link", sub: "Link the package locally to test CLI commands.", code: "npm link" },
 ]
@@ -68,7 +68,7 @@ export default function CommunityPage() {
                         <h2 className="text-[10px] font-black text-muted uppercase tracking-[0.2em] mb-10 pl-1">Development Setup</h2>
                         <div className="space-y-12 relative">
                             {/* Visual Connector Line */}
-                            <div className="absolute left-[17px] top-8 bottom-8 w-px bg-border group" />
+                            <div className="absolute left-4.25 top-8 bottom-8 w-px bg-border group" />
 
                             {setupSteps.map((step) => (
                                 <motion.div
@@ -130,7 +130,7 @@ export default function CommunityPage() {
                 </section>
 
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-sm z-40">
-                    <button className="w-full h-[60px] bg-primary text-primary-foreground rounded-[1.5rem] font-black text-base flex items-center justify-center shadow-[0_15px_40px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
+                    <button className="w-full h-15 bg-primary text-primary-foreground rounded-[1.5rem] font-black text-base flex items-center justify-center shadow-[0_15px_40px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
                         <Send className="w-5 h-5 mr-3" />
                         Open Pull Request
                     </button>

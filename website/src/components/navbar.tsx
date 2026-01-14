@@ -18,7 +18,7 @@ export function Navbar() {
 
     return (
         <nav className="fixed top-0 w-full z-50 transition-all duration-300">
-            <div className="max-w-[1400px] mx-auto px-6 mt-6">
+            <div className="max-w-350 mx-auto px-6 mt-6">
                 <div className="h-16 px-8 glass rounded-2xl border border-border/50 stiff-shadow flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 font-bold text-lg tracking-tight hover:scale-105 transition-transform shrink-0">
                         <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-foreground text-sm shadow-lg shadow-primary/20">
@@ -33,7 +33,7 @@ export function Navbar() {
                     {/* Desktop Nav - Centered */}
                     <div className="hidden md:flex items-center gap-10 text-[14px] font-bold">
                         {navItems.map((item) => (
-                            <Link key={item.name} href={item.href} className="text-muted hover:text-foreground transition-all hover:translate-y-[-1px]">
+                            <Link key={item.name} href={item.href} className="text-muted hover:text-foreground transition-all hover:-translate-y-px">
                                 {item.name}
                             </Link>
                         ))}
@@ -45,7 +45,7 @@ export function Navbar() {
                             <Menu className="w-6 h-6" />
                         </button>
                         <div className="h-5 w-px bg-border mx-2 hidden md:block" />
-                        <Link href="https://github.com/your-repo/trix" target="_blank" className="hidden md:block p-2.5 text-muted hover:text-foreground transition-all hover:scale-110">
+                        <Link href="https://github.com/JubrilKolade/trix" target="_blank" className="hidden md:block p-2.5 text-muted hover:text-foreground transition-all hover:scale-110">
                             <Github className="w-6 h-6" />
                         </Link>
                     </div>
@@ -68,7 +68,7 @@ export function Navbar() {
                         </Link>
                     ))}
                     <div className="h-px bg-border" />
-                    <Link href="https://github.com/your-repo/trix" target="_blank" className="flex items-center gap-3 text-primary">
+                    <Link href="https://github.com/JubrilKolade/trix" target="_blank" className="flex items-center gap-3 text-primary">
                         <Github className="w-5 h-5" /> Source Code
                     </Link>
                 </motion.div>
