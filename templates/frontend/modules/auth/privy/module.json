@@ -1,0 +1,28 @@
+{
+    "name": "privy",
+    "type": "auth",
+    "files": [],
+    "dependencies": {
+        "prod": {
+            "@privy-io/react-auth": "^1.50.0"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { PrivyProvider } from '@privy-io/react-auth';"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<PrivyProvider appId=\"your-app-id\" config={{ loginMethods: ['email', 'wallet'], appearance: { theme: 'light' } }}>"
+        },
+        {
+            "file": ".env",
+            "position": "append",
+            "code": "VITE_PRIVY_APP_ID=\"your-app-id\""
+        }
+    ]
+}

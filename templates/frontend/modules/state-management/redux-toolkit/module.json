@@ -1,0 +1,35 @@
+{
+    "name": "redux-toolkit",
+    "type": "state-management",
+    "files": [
+        {
+            "source": "frontend/modules/state-management/redux-toolkit/store.ts",
+            "destination": "src/store/index.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        },
+        {
+            "source": "frontend/modules/state-management/redux-toolkit/slice.ts",
+            "destination": "src/store/slices/counterSlice.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "@reduxjs/toolkit": "^2.0.1",
+            "react-redux": "^9.0.4"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { Provider } from 'react-redux';\nimport { store } from './store';"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<Provider store={store}>"
+        }
+    ]
+}

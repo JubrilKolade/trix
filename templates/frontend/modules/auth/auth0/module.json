@@ -1,0 +1,28 @@
+{
+    "name": "auth0",
+    "type": "auth",
+    "files": [],
+    "dependencies": {
+        "prod": {
+            "@auth0/auth0-react": "^2.2.3"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { Auth0Provider } from '@auth0/auth0-react';"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<Auth0Provider domain=\"your-domain\" clientId=\"your-client-id\" authorizationParams={{ redirect_uri: window.location.origin }}>"
+        },
+        {
+            "file": ".env",
+            "position": "append",
+            "code": "VITE_AUTH0_DOMAIN=\"your-domain\"\nVITE_AUTH0_CLIENT_ID=\"your-client-id\""
+        }
+    ]
+}

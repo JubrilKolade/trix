@@ -33,7 +33,7 @@ export interface TemplateFile {
 
 export interface CodeInjection {
   file: string;
-  position: 'import' | 'provider' | 'config' | 'custom';
+  position: 'import' | 'provider' | 'config' | 'custom' | 'append';
   code: string;
   marker?: string;
 }

@@ -1,0 +1,24 @@
+{
+    "name": "supabase-auth",
+    "type": "auth",
+    "files": [
+        {
+            "source": "frontend/modules/auth/supabase-auth/supabase.ts",
+            "destination": "src/lib/supabase.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "@supabase/supabase-js": "^2.39.0"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": ".env",
+            "position": "append",
+            "code": "VITE_SUPABASE_URL=\"your-supabase-url\"\nVITE_SUPABASE_ANON_KEY=\"your-supabase-anon-key\""
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "name": "material-ui",
+    "type": "ui-components",
+    "files": [],
+    "dependencies": {
+        "prod": {
+            "@mui/material": "^5.14.20",
+            "@emotion/react": "^11.11.1",
+            "@emotion/styled": "^11.11.0"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": "src/main.tsx",
+            "position": "import",
+            "code": "import { ThemeProvider, createTheme } from '@mui/material/styles';\nimport CssBaseline from '@mui/material/CssBaseline';\n\nconst theme = createTheme();"
+        },
+        {
+            "file": "src/main.tsx",
+            "position": "provider",
+            "code": "<ThemeProvider theme={theme}>\n  <CssBaseline />"
+        }
+    ],
+    "compatibleWith": [
+        "react"
+    ]
+}

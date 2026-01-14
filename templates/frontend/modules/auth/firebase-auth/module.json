@@ -1,0 +1,24 @@
+{
+    "name": "firebase-auth",
+    "type": "auth",
+    "files": [
+        {
+            "source": "frontend/modules/auth/firebase-auth/firebase.ts",
+            "destination": "src/lib/firebase.{{#if typescript}}ts{{else}}js{{/if}}",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "firebase": "^10.7.0"
+        },
+        "dev": {}
+    },
+    "injections": [
+        {
+            "file": ".env",
+            "position": "append",
+            "code": "VITE_FIREBASE_API_KEY=\"your-api-key\"\nVITE_FIREBASE_AUTH_DOMAIN=\"your-auth-domain\"\nVITE_FIREBASE_PROJECT_ID=\"your-project-id\"\nVITE_FIREBASE_STORAGE_BUCKET=\"your-storage-bucket\"\nVITE_FIREBASE_MESSAGING_SENDER_ID=\"your-sender-id\"\nVITE_FIREBASE_APP_ID=\"your-app-id\""
+        }
+    ]
+}

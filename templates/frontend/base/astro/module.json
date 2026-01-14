@@ -1,0 +1,42 @@
+{
+    "name": "astro-base",
+    "type": "base",
+    "framework": "astro",
+    "files": [
+        {
+            "source": "frontend/base/astro/astro.config.mjs",
+            "destination": "astro.config.mjs",
+            "type": "template"
+        },
+        {
+            "source": "frontend/base/astro/src/pages/index.astro",
+            "destination": "src/pages/index.astro",
+            "type": "template"
+        },
+        {
+            "source": "frontend/base/astro/src/layouts/Layout.astro",
+            "destination": "src/layouts/Layout.astro",
+            "type": "template"
+        },
+        {
+            "source": "frontend/base/astro/tsconfig.json",
+            "destination": "tsconfig.json",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {
+            "astro": "^4.0.0"
+        },
+        "dev": {
+            "typescript": "^5.0.0"
+        }
+    },
+    "scripts": {
+        "dev": "astro dev",
+        "start": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro"
+    }
+}
