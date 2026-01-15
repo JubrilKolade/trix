@@ -4,6 +4,7 @@ import { ProjectConfig, FrontendConfig, BackendConfig, MobileConfig } from '../t
 import { DependencyInstaller } from '../installers/dependency-installer.js';
 import path from 'path';
 import fs from 'fs-extra';
+import fsNative from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -109,10 +110,8 @@ export class ConfigurationBuilder {
   private loadBackendModules(config: BackendConfig): TemplateModule[] {
     const modules: TemplateModule[] = [];
 
-    // Base module is required
     modules.push(this.loadModule('backend', 'base', `${config.runtime}-${config.framework}`));
 
-    // Optional modules - only load if template exists
     if (config.database !== 'none') {
       this.tryLoadModule(modules, 'backend', 'database', config.database);
     }
@@ -125,7 +124,6 @@ export class ConfigurationBuilder {
       this.tryLoadModule(modules, 'backend', 'auth', config.auth);
     }
 
-    // These modules may not exist yet - silently skip if missing
     this.tryLoadModule(modules, 'backend', 'api-type', config.apiType);
 
     if (config.validation !== 'none') {
@@ -170,7 +168,7 @@ export class ConfigurationBuilder {
     name: string
   ): void {
     const modulePath = this.getModulePath(projectType, category, name);
-    if (fs.existsSync(modulePath)) {
+    if (fsNative.existsSync(modulePath)) {
       modules.push(this.loadModule(projectType, category, name));
     }
   }
@@ -178,43 +176,36 @@ export class ConfigurationBuilder {
   private getModulePath(projectType: string, category: string, name: string): string {
     if (category === 'base') {
       const nameParts = name.split('-');
-      return path.join(__dirname, '../../templates', projectType, 'base', ...nameParts, 'module.json');
+      return path.resolve(__dirname, '../../templates', projectType, 'base', ...nameParts, 'module.json');
     }
-    return path.join(__dirname, '../../templates', projectType, 'modules', category, name, 'module.json');
+    return path.resolve(__dirname, '../../templates', projectType, 'modules', category, name, 'module.json');
   }
 
   private loadMobileModules(config: MobileConfig): TemplateModule[] {
     const modules: TemplateModule[] = [];
 
-    // Base framework template (expo or react-native-cli)
     modules.push(this.loadModule('mobile', 'base', config.framework));
 
-    // Navigation
     if (config.navigation !== 'none') {
       modules.push(this.loadModule('mobile', 'navigation', config.navigation));
     }
 
-    // Styling
     if (config.styling !== 'vanilla') {
       modules.push(this.loadModule('mobile', 'styling', config.styling));
     }
 
-    // State management
     if (config.stateManagement !== 'none') {
       modules.push(this.loadModule('mobile', 'state-management', config.stateManagement));
     }
 
-    // API client
     if (config.apiClient !== 'fetch') {
       modules.push(this.loadModule('mobile', 'api-client', config.apiClient));
     }
 
-    // Auth
     if (config.auth !== 'none') {
       modules.push(this.loadModule('mobile', 'auth', config.auth));
     }
 
-    // Testing
     if (config.testing) {
       modules.push(this.loadModule('mobile', 'testing', 'jest-rn'));
     }
@@ -227,33 +218,23 @@ export class ConfigurationBuilder {
     category: string,
     name: string
   ): TemplateModule {
-    let modulePath: string;
-
-    if (category === 'base') {
-      // Base templates handle their own nesting (e.g., node/express)
-      const nameParts = name.split('-');
-      modulePath = path.join(
-        __dirname,
-        '../../templates',
-        projectType,
-        'base',
-        ...nameParts,
-        'module.json'
-      );
-    } else {
-      modulePath = path.join(
-        __dirname,
-        '../../templates',
-        projectType,
-        'modules',
-        category,
-        name,
-        'module.json'
-      );
+    if (!name) {
+      console.warn(`No name provided for module ${category}`);
+      return {
+        name: `${category}-unknown`,
+        type: 'addon',
+        files: [],
+        dependencies: { prod: {}, dev: {} },
+        scripts: {},
+        configs: {},
+        injections: [],
+        postInstall: []
+      };
     }
+    const modulePath = this.getModulePath(projectType, category, name);
 
     try {
-      if (fs.existsSync(modulePath)) {
+      if (fsNative.existsSync(modulePath)) {
         return fs.readJSONSync(modulePath);
       } else {
         console.warn(`Module file not found: ${modulePath}`);

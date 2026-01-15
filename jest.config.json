@@ -1,11 +1,24 @@
 {
-  "preset": "ts-jest",
+  "preset": "ts-jest/presets/default-esm",
   "testEnvironment": "node",
-  "roots": ["<rootDir>/tests"],
-  "testMatch": ["**/*.test.ts"],
-  "collectCoverageFrom": [
-    "src/**/*.ts",
-    "!src/**/*.d.ts",
-    "!src/types/**"
+  "extensionsToTreatAsEsm": [
+    ".ts"
+  ],
+  "moduleNameMapper": {
+    "^(\\.\\.?/.*)\\.js$": "$1"
+  },
+  "transform": {
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        "useESM": true
+      }
+    ]
+  },
+  "roots": [
+    "<rootDir>/tests"
+  ],
+  "testMatch": [
+    "**/*.test.ts"
   ]
 }

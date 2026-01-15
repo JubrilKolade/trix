@@ -1,0 +1,15 @@
+{
+    "name": "vanilla",
+    "type": "styling",
+    "files": [
+        {
+            "source": "frontend/modules/styling/vanilla/index.css",
+            "destination": "src/index.css",
+            "type": "template"
+        }
+    ],
+    "dependencies": {
+        "prod": {},
+        "dev": {}
+    }
+}
