@@ -32,11 +32,12 @@ export function Hero() {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                             </span>
-                            Stable · v1.0.4
+                            Stable · v1.0.1
                         </div>
 
                         <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4">
                             Ship faster with <span className="text-primary">Trix</span>
+                            <span className="block text-2xl md:text-3xl opacity-80 mt-2">Web + Mobile Scaffolding</span>
                         </h1>
 
                         <p className="text-base md:text-lg text-muted-foreground font-medium leading-relaxed mb-6 max-w-lg">
@@ -47,7 +48,7 @@ export function Hero() {
                             <Link href="/docs" className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-sm shadow-sm hover:scale-105 transition-transform">
                                 Get Started
                             </Link>
-                            <Link href="https://github.com/your-repo/trix" target="_blank" className="px-3 py-2 bg-card text-foreground rounded-md font-semibold text-sm border border-border hover:bg-card/90 transition-all flex items-center gap-2">
+                            <Link href="https://github.com/JubrilKolade/trix" target="_blank" className="px-3 py-2 bg-card text-foreground rounded-md font-semibold text-sm border border-border hover:bg-card/90 transition-all flex items-center gap-2">
                                 <Github className="w-4 h-4 inline" /> GitHub
                             </Link>
                         </div>

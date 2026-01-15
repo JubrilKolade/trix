@@ -45,25 +45,25 @@ export function CLITerminal({
 
     return (
         <div className={`w-full group relative ${className}`}>
-            <div className="bg-[#0b0c14] rounded-lg border border-border/50 overflow-hidden stiff-shadow">
+            <div className="bg-cli-bg rounded-lg border border-border/50 overflow-hidden shadow-2xl">
                 {showControls && (
-                    <div className="h-9 border-b border-border/50 bg-background/5 flex items-center px-4 gap-2">
+                    <div className="h-9 border-b border-white/5 bg-white/5 flex items-center px-4 gap-2">
                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/40" />
                         <div className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-amber-500/40" />
                         <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/40" />
-                        <div className="flex-1 text-[10px] text-muted-foreground font-mono text-center uppercase tracking-widest opacity-50">Terminal</div>
+                        <div className="flex-1 text-[10px] text-white/40 font-mono text-center uppercase tracking-widest">Terminal</div>
                     </div>
                 )}
                 <div className="p-6 font-mono text-[13px] leading-relaxed relative min-h-25">
                     <div className="flex items-center gap-3">
                         <span className="text-primary font-bold">$</span>
-                        <span className="text-foreground font-bold">
+                        <span className="text-cli-text font-bold">
                             {displayText}
                             {animated && !isFinished && (
                                 <motion.span
                                     animate={{ opacity: [1, 0] }}
                                     transition={{ repeat: Infinity, duration: 0.8 }}
-                                    className="inline-block w-2 h-4 bg-primary ml-1 translate-y-0.5"
+                                    className="inline-block w-1.5 h-4 bg-primary ml-1 translate-y-0.5"
                                 />
                             )}
                         </span>
@@ -76,8 +76,8 @@ export function CLITerminal({
                                 animate={{ opacity: 1, y: 0 }}
                                 className="mt-4 space-y-1.5"
                             >
-                                <div className="text-muted-foreground opacity-60">▸ Fetching templates...</div>
-                                <div className="text-green-500 font-bold flex items-center gap-2">
+                                <div className="text-cli-text/50">▸ Fetching templates...</div>
+                                <div className="text-green-400 font-bold flex items-center gap-2">
                                     <Check className="w-3 h-3" /> Successfully initialized project
                                 </div>
                             </motion.div>
@@ -86,9 +86,9 @@ export function CLITerminal({
 
                     <button
                         onClick={copyToClipboard}
-                        className="absolute right-4 top-4 p-2.5 bg-background border border-border rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-secondary active:scale-95"
+                        className="absolute right-4 top-4 p-2.5 bg-white/5 border border-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-white/10 active:scale-95"
                     >
-                        {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-muted" />}
+                        {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-white/50" />}
                     </button>
                 </div>
             </div>

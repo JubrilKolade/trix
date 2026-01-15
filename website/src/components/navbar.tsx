@@ -21,19 +21,18 @@ export function Navbar() {
             <div className="max-w-350 mx-auto px-6 mt-6">
                 <div className="h-16 px-8 glass rounded-2xl border border-border/50 stiff-shadow flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 font-bold text-lg tracking-tight hover:scale-105 transition-transform shrink-0">
-                        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-foreground text-sm shadow-lg shadow-primary/20">
+                        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20">
                             <Boxes className="w-5 h-5" />
                         </div>
                         <div className="flex flex-col leading-none">
-                            <span>Trix</span>
-                            {/* <span className="text-[10px] font-black text-muted tracking-[0.1em] mt-0.5">CLI ENGINE</span> */}
+                            <span className="text-foreground">Trix</span>
                         </div>
                     </Link>
 
                     {/* Desktop Nav - Centered */}
                     <div className="hidden md:flex items-center gap-10 text-[14px] font-bold">
                         {navItems.map((item) => (
-                            <Link key={item.name} href={item.href} className="text-muted hover:text-foreground transition-all hover:-translate-y-px">
+                            <Link key={item.name} href={item.href} className="text-muted-foreground hover:text-primary transition-all hover:-translate-y-px">
                                 {item.name}
                             </Link>
                         ))}

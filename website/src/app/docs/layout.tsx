@@ -68,7 +68,7 @@ export default function DocsLayout({
 
                 <div className="flex items-center gap-3">
                     <div className="relative hidden md:block">
-                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
                             type="text"
                             placeholder="Find a command..."
@@ -100,7 +100,7 @@ export default function DocsLayout({
                                                 }`}
                                         >
                                             {isActive && <motion.div layoutId="doc-active" className="absolute left-0 w-1 h-4 bg-primary rounded-full" />}
-                                            <span className={isActive ? "text-primary" : "text-muted"}>{item.icon}</span>
+                                            <span className={isActive ? "text-primary" : "text-muted-foreground"}>{item.icon}</span>
                                             {item.name}
                                         </Link>
                                     )
@@ -150,7 +150,7 @@ export default function DocsLayout({
                                                             onClick={() => setSidebarOpen(false)}
                                                             className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[14px] font-bold transition-all ${isActive
                                                                 ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                                                                : "text-muted hover:text-foreground hover:bg-secondary"
+                                                                : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                                                                 }`}
                                                         >
                                                             {item.icon}
@@ -175,7 +175,7 @@ export default function DocsLayout({
                             animate={{ opacity: 1, y: 0 }}
                             className="prose prose-slate dark:prose-invert max-w-none 
                         prose-headings:font-black prose-headings:tracking-tighter prose-headings:text-foreground
-                        prose-p:text-[15px] prose-p:leading-relaxed prose-p:font-semibold prose-p:text-muted-foreground/80
+                        prose-p:text-[15px] prose-p:leading-relaxed prose-p:font-semibold prose-p:text-foreground/80
                         prose-a:no-underline prose-a:font-bold prose-a:text-primary prose-code:text-primary prose-code:font-bold
                         prose-pre:bg-(--color-cli-bg) prose-pre:border prose-pre:border-border/50 prose-pre:rounded-3xl"
                         >
@@ -184,24 +184,44 @@ export default function DocsLayout({
 
                         {/* Pagination */}
                         <div className="mt-32 pt-12 border-t border-border/50 flex flex-col sm:flex-row gap-4 items-center justify-between">
-                            <Link href="/" className="group flex items-center gap-4 hover:opacity-80 transition-opacity">
-                                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center font-black group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                                    <ArrowLeft className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <span className="text-[9px] font-black text-muted uppercase tracking-widest block">Home</span>
-                                    <span className="text-sm font-bold">Safety Logic</span>
-                                </div>
-                            </Link>
-                            <Link href="/docs/quick-start" className="group flex items-center gap-4 hover:opacity-80 transition-opacity text-right">
-                                <div>
-                                    <span className="text-[9px] font-black text-muted uppercase tracking-widest block">Next</span>
-                                    <span className="text-sm font-bold">Quick Start</span>
-                                </div>
-                                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center font-black group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                                    <ChevronRight className="w-5 h-5" />
-                                </div>
-                            </Link>
+                            {(() => {
+                                const allItems = sidebarItems.flatMap(group => group.items);
+                                const currentIndex = allItems.findIndex(item => item.href === pathname);
+                                const prev = currentIndex > 0 ? allItems[currentIndex - 1] : null;
+                                const next = currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : null;
+
+                                return (
+                                    <>
+                                        {prev ? (
+                                            <Link href={prev.href} className="group flex items-center gap-4 hover:opacity-80 transition-opacity">
+                                                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center font-black group-hover:bg-primary group-hover:text-primary-foreground transition-all text-muted-foreground">
+                                                    <ArrowLeft className="w-5 h-5" />
+                                                </div>
+                                                <div>
+                                                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest block">Previous</span>
+                                                    <span className="text-sm font-bold">{prev.name}</span>
+                                                </div>
+                                            </Link>
+                                        ) : (
+                                            <div />
+                                        )}
+
+                                        {next ? (
+                                            <Link href={next.href} className="group flex items-center gap-4 hover:opacity-80 transition-opacity text-right">
+                                                <div>
+                                                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest block">Next</span>
+                                                    <span className="text-sm font-bold">{next.name}</span>
+                                                </div>
+                                                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center font-black group-hover:bg-primary group-hover:text-primary-foreground transition-all text-muted-foreground">
+                                                    <ChevronRight className="w-5 h-5" />
+                                                </div>
+                                            </Link>
+                                        ) : (
+                                            <div />
+                                        )}
+                                    </>
+                                );
+                            })()}
                         </div>
                     </div>
                 </main>

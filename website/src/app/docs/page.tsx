@@ -26,8 +26,8 @@ export default function DocsIndex() {
             </p>
 
             <div className="mt-6 flex items-center justify-center gap-3">
-              <Link href="/docs/quick-start" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold">Quick Start</Link>
-              <Link href="/docs/mobile" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary/80">Mobile Guides</Link>
+              <Link href="/docs/quick-start" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold hover:opacity-90 transition-opacity">Quick Start</Link>
+              <Link href="/docs/mobile" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground font-bold hover:bg-secondary/80 transition-colors">Mobile Support</Link>
             </div>
           </div>
         </header>
@@ -37,7 +37,7 @@ export default function DocsIndex() {
             <Link key={d.name} href={d.href} className="relative group p-5 rounded-lg bg-card border border-border hover:border-primary transition-all">
               {d.name === 'Mobile' && (
                 <div className="absolute right-4 top-4">
-                  <span className="inline-flex items-center gap-2 px-2 py-1 rounded-full text-[11px] font-bold bg-amber-400 text-black">Experimental</span>
+                  <span className="inline-flex items-center gap-2 px-2 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary border border-primary/20">Official Support</span>
                 </div>
               )}
 
@@ -49,7 +49,7 @@ export default function DocsIndex() {
                 </div>
               </div>
             </Link>
-          ))} 
+          ))}
         </section>
 
         <section className="mt-12 text-sm text-muted-foreground">

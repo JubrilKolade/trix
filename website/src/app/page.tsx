@@ -30,6 +30,11 @@ const features = [
     title: "Zero Config",
     description: "Sensible defaults that just work, so you can focus on code.",
     icon: <Settings2 className="w-5 h-5" />,
+  },
+  {
+    title: "Mobile Ready",
+    description: "Built-in support for React Native and Flutter project generation.",
+    icon: <Boxes className="w-5 h-5" />,
   }
 ]
 
@@ -58,7 +63,7 @@ export default function LandingPage() {
               <h2 className="text-3xl md:text-4xl font-extrabold mb-3">Why Trix</h2>
               <p className="text-muted-foreground font-medium max-w-md">Engineered for performance and developer happiness.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((f, i) => (
                 <FeatureCard key={f.title} {...f} index={i} className="backdrop-blur-2xl bg-card border-border/50 hover:bg-card/95 transition-all" />
               ))}
