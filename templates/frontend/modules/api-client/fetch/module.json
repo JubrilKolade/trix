@@ -1,0 +1,9 @@
+{
+    "name": "fetch",
+    "type": "api-client",
+    "files": [],
+    "dependencies": {
+        "prod": {},
+        "dev": {}
+    }
+}
