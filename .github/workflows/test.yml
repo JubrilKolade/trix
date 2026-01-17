@@ -7,7 +7,7 @@ on:
     branches: [main, develop]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -27,3 +27,7 @@ jobs:
       
       - name: Run linting
         run: npm run lint --if-present
+      
+      # Tests are skipped until test suite is set up
+      # - name: Run tests
+      #   run: npm test --if-present
